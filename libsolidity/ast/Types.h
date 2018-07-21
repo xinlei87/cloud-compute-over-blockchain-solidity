@@ -897,7 +897,7 @@ public:
 		SHA3, ///< SHA3
 		Selfdestruct, ///< SELFDESTRUCT
 		Revert, ///< REVERT
-		ECRecover, ///< CALL to special contract for ecrecover
+		ACCumulate, ///< CALL to special contract for accumulate
 		SHA256, ///< CALL to special contract for sha256
 		RIPEMD160, ///< CALL to special contract for ripemd160
 		Log0,
@@ -1048,7 +1048,7 @@ public:
 	bool hasDeclaration() const { return !!m_declaration; }
 	/// @returns true if the result of this function only depends on its arguments,
 	/// does not modify the state and is a compile-time constant.
-	/// Currently, this will only return true for internal functions like keccak and ecrecover.
+	/// Currently, this will only return true for internal functions like keccak and accumulate.
 	bool isPure() const;
 	bool isPayable() const { return m_stateMutability == StateMutability::Payable; }
 	/// @return A shared pointer of an ASTString.
