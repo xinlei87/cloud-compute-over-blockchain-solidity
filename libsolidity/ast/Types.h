@@ -900,6 +900,7 @@ public:
 		ACCumulate, ///< CALL to special contract for accumulate
 		SHA256, ///< CALL to special contract for sha256
 		RIPEMD160, ///< CALL to special contract for ripemd160
+		ECRecover, ///< CALL to special contract for ecrecover
 		Log0,
 		Log1,
 		Log2,

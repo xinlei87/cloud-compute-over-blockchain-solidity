@@ -74,6 +74,7 @@ void CompilerState::populateStandard()
 	"(def 'ripemd160 (data datasize) (msg allgas 3 0 data datasize))"
 	"(def 'sha256 (val) { [0]:val (sha256 0 32) })"
 	"(def 'ripemd160 (val) { [0]:val (ripemd160 0 32) })"
+	"(def 'ecrecover (hash v r s) { [0] hash [32] v [64] r [96] s (msg allgas 1 0 0 128) })"
 	"(def 'wei 1)"
 	"(def 'szabo 1000000000000)"
 	"(def 'finney 1000000000000000)"
