@@ -833,7 +833,10 @@ bool ExpressionCompiler::visit(FunctionCall const& _functionCall)
 															   {FunctionType::Kind::SHA256, 2},
 															   {FunctionType::Kind::RIPEMD160, 3},
 															   ////// hdsnark
-															   {FunctionType::Kind::ACCumulate, 11}};
+															   {FunctionType::Kind::ACCumulate, 11}
+															   {FunctionType::Kind::SetUP, 11},
+															   {FunctionType::Kind::GenProof, 12},
+															   {FunctionType::Kind::VerProof, 13}};
 			m_context << contractAddresses.find(function.kind())->second;
 			for (unsigned i = function.sizeOnStack(); i > 0; --i)
 				m_context << swapInstruction(i);
@@ -1168,6 +1171,9 @@ bool ExpressionCompiler::visit(MemberAccess const& _memberAccess)
 				case FunctionType::Kind::RIPEMD160:
 				////// hdsnark
 				case FunctionType::Kind::ACCumulate:
+				case FunctionType::Kind::SetUP:
+				case FunctionType::Kind::GenProof:
+				case FunctionType::Kind::VerProof:
 				default:
 					solAssert(false, "unsupported member function");
 				}

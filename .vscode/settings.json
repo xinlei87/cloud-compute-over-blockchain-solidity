@@ -4,6 +4,7 @@
         "system_error": "cpp",
         "thread": "cpp",
         "*.ipp": "cpp",
-        "slist": "cpp"
+        "slist": "cpp",
+        "typeinfo": "cpp"
     }
 }

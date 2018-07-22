@@ -902,6 +902,9 @@ public:
 		RIPEMD160, ///< CALL to special contract for ripemd160
 		////// hdsnark
 		ACCumulate, ///< CALL to special contract for accumulate
+		SetUP,
+		GenProof,
+        VerProof,
 		//////
 		Log0,
 		Log1,

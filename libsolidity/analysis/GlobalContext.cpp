@@ -44,7 +44,7 @@ m_magicVariables(vector<shared_ptr<MagicVariableDeclaration const>>{
 	make_shared<MagicVariableDeclaration>("gasleft", make_shared<FunctionType>(strings(), strings{"uint256"}, FunctionType::Kind::GasLeft, false, StateMutability::View)),
 	make_shared<MagicVariableDeclaration>("keccak256", make_shared<FunctionType>(strings{"bytes memory"}, strings{"bytes32"}, FunctionType::Kind::SHA3, false, StateMutability::Pure)),
 	////// hdsnark
-	// make_shared<MagicVariableDeclaration>("accumulate", make_shared<FunctionType>(strings{"bytes32", "uint8", "bytes32", "bytes32"}, strings{"address"}, FunctionType::Kind::ACCumulate, false, StateMutability::Pure)),
+	make_shared<MagicVariableDeclaration>("accumulate", make_shared<FunctionType>(strings{"bytes32", "uint8", "bytes32", "bytes32"}, strings{"address"}, FunctionType::Kind::ACCumulate, false, StateMutability::Pure)),
 	make_shared<MagicVariableDeclaration>("setUp", make_shared<FunctionType>(strings{"bytes32", "uint8", "bytes32", "bytes32"}, strings{"address"}, FunctionType::Kind::SetUP, false, StateMutability::Pure)),
 	make_shared<MagicVariableDeclaration>("genProof", make_shared<FunctionType>(strings{"bytes32", "uint8", "bytes32", "bytes32"}, strings{"address"}, FunctionType::Kind::GenProof, false, StateMutability::Pure)),
 	make_shared<MagicVariableDeclaration>("verProof", make_shared<FunctionType>(strings{"bytes32", "uint8", "bytes32", "bytes32"}, strings{"address"}, FunctionType::Kind::VerProof, false, StateMutability::Pure)),
