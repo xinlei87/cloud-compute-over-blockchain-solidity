@@ -74,7 +74,12 @@ void CompilerState::populateStandard()
 	"(def 'ripemd160 (data datasize) (msg allgas 3 0 data datasize))"
 	"(def 'sha256 (val) { [0]:val (sha256 0 32) })"
 	"(def 'ripemd160 (val) { [0]:val (ripemd160 0 32) })"
-	"(def 'accumulate (hash v r s) { [0] hash [32] v [64] r [96] s (msg allgas 11 0 0 128) })"
+	////////// NOTE: hdsnark parameters
+	/// "(def 'accumulate (hash v r s) { [0] hash [32] v [64] r [96] s (msg allgas 11 0 0 128) })"
+	"(def 'setUp() {(msg allgas 11) })"
+	"(def 'genProof (pk, ) { [0] hash [32] v [64] r [96] s (msg allgas 12 0 0 128) })"
+	"(def 'verProof (hash v r s) { [0] hash [32] v [64] r [96] s (msg allgas 13 0 0 128) })"
+    ///////////
 	"(def 'wei 1)"
 	"(def 'szabo 1000000000000)"
 	"(def 'finney 1000000000000000)"

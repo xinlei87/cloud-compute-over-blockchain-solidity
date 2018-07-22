@@ -832,6 +832,7 @@ bool ExpressionCompiler::visit(FunctionCall const& _functionCall)
 			static const map<FunctionType::Kind, u256> contractAddresses{{FunctionType::Kind::ECRecover, 1},
 															   {FunctionType::Kind::SHA256, 2},
 															   {FunctionType::Kind::RIPEMD160, 3},
+															   ////// hdsnark
 															   {FunctionType::Kind::ACCumulate, 11}};
 			m_context << contractAddresses.find(function.kind())->second;
 			for (unsigned i = function.sizeOnStack(); i > 0; --i)
@@ -1165,6 +1166,7 @@ bool ExpressionCompiler::visit(MemberAccess const& _memberAccess)
 				case FunctionType::Kind::ECRecover:
 				case FunctionType::Kind::SHA256:
 				case FunctionType::Kind::RIPEMD160:
+				////// hdsnark
 				case FunctionType::Kind::ACCumulate:
 				default:
 					solAssert(false, "unsupported member function");
@@ -1861,6 +1863,7 @@ void ExpressionCompiler::appendExternalFunctionCall(
 		utils().storeFreeMemoryPointer();
 	}
     
+	////// hdsnark
 	if (funKind == FunctionType::Kind::ACCumulate)
 	{
 		// Clears 32 bytes of currently free memory and advances free memory pointer.
@@ -1873,6 +1876,7 @@ void ExpressionCompiler::appendExternalFunctionCall(
 		m_context << u256(32) << Instruction::ADD;
 		utils().storeFreeMemoryPointer();
 	}
+	////////
 
 	if (!m_context.evmVersion().canOverchargeGasForCall())
 	{
@@ -1929,6 +1933,7 @@ void ExpressionCompiler::appendExternalFunctionCall(
 		m_context << Instruction::DUP1 << Instruction::DUP5 << Instruction::SUB;
 		m_context << Instruction::SWAP1;
 	}
+	////// hdsnark
 	else if (funKind == FunctionType::Kind::ACCumulate)
 	{
 		// In this case, output is 32 bytes before input and has already been cleared.
@@ -1936,7 +1941,9 @@ void ExpressionCompiler::appendExternalFunctionCall(
 		// Here: <input end> <output size> <outpos> <input pos>
 		m_context << Instruction::DUP1 << Instruction::DUP5 << Instruction::SUB;
 		m_context << Instruction::SWAP1;
-	} else
+	} 
+	//////
+	else
 	{
 		m_context << Instruction::DUP1 << Instruction::DUP4 << Instruction::SUB;
 		m_context << Instruction::DUP2;
@@ -2027,6 +2034,7 @@ void ExpressionCompiler::appendExternalFunctionCall(
 		utils().fetchFreeMemoryPointer();
 		m_context << Instruction::SUB << Instruction::MLOAD;
 	}
+	////// hdsnark
 	else if (funKind == FunctionType::Kind::ACCumulate)
 	{
 		// Output is 32 bytes before input / free mem pointer.
@@ -2035,6 +2043,7 @@ void ExpressionCompiler::appendExternalFunctionCall(
 		utils().fetchFreeMemoryPointer();
 		m_context << Instruction::SUB << Instruction::MLOAD;
 	}
+	//////
 	else if (!returnTypes.empty())
 	{
 		utils().fetchFreeMemoryPointer();

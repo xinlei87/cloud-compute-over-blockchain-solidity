@@ -2484,6 +2484,7 @@ string FunctionType::richIdentifier() const
 	case Kind::ECRecover: id += "ecrecover"; break;
 	case Kind::SHA256: id += "sha256"; break;
 	case Kind::RIPEMD160: id += "ripemd160"; break;
+	////// hdsnark
 	case Kind::ACCumulate: id += "accumulate"; break;
 	case Kind::Log0: id += "log0"; break;
 	case Kind::Log1: id += "log1"; break;
@@ -2828,6 +2829,7 @@ bool FunctionType::isBareCall() const
 	case Kind::ECRecover:
 	case Kind::SHA256:
 	case Kind::RIPEMD160:
+	////// hdsnark
 	case Kind::ACCumulate:
 		return true;
 	default:
@@ -2869,6 +2871,7 @@ bool FunctionType::isPure() const
 		m_kind == Kind::ECRecover ||		
 		m_kind == Kind::SHA256 ||
 		m_kind == Kind::RIPEMD160 ||
+		////// hdsnark
 		m_kind == Kind::ACCumulate ||
 		m_kind == Kind::AddMod ||
 		m_kind == Kind::MulMod ||

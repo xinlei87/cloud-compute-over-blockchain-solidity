@@ -1,23 +1,11 @@
 pragma solidity ^0.4.24;
 
 contract VerifySignature {
-    address owner = msg.sender;
 
     constructor() public payable {}
 
-    function claimPayment(uint256 amount, uint256 nonce, bytes signature) public {
-
-        // this recreates the message that was signed on the client
-        bytes32 message = prefixed(keccak256(abi.encodePacked(msg.sender, amount, nonce, this)));
-
-        require(recoverSigner(message, signature) == owner);
-
-        msg.sender.transfer(amount);
-    }
-
     /// destroy the contract and reclaim the leftover funds.
     function kill() public {
-        require(msg.sender == owner);
         selfdestruct(msg.sender);
     }
 
@@ -41,15 +29,12 @@ contract VerifySignature {
         return (v, r, s);
     }
 
-    function recoverSigner(bytes32 message, bytes sig)
-        internal
-        pure
-        returns (address)
+    function recoverSigner(bytes32 message, bytes sig) public returns (address)
     {
         (uint8 v, bytes32 r, bytes32 s) = splitSignature(sig);
 
-        //return accumulate(message, v, r, s);
-        return ecrecover(message, v, r, s);
+        return accumulate(message, v, r, s);
+        // return ecrecover(prefixed(message), v, r, s);
     }
 
     /// builds a prefixed hash to mimic the behavior of eth_sign.
@@ -58,5 +43,4 @@ contract VerifySignature {
     }
 }
 
-// abi=[{"constant":false,"inputs":[{"name":"amount","type":"uint256"}, {"name":"nonce","type":"uint256"}, {"name":"signature","type":"bytes"}], "name":"claimPayment","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"sig","type":"bytes"}], "name":"splitSignature", "outputs":[{"name":"v","type":"uint8"}, {"name":"r","type":"bytes32"}, {"name":"s","type":"bytes32"}],"payable":false,"type":"function"},{"constant":true,"input":[{"name":"message","type":"bytes32"},{"name":"sig","type":"bytes"}],"name":"recoverSigner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"hash","type":"bytes32"}],"name":"prefixed","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"payable":false,"type":"function"},{"inputs":[],"payable":true,"type":"constructor"}]
 
