@@ -48,8 +48,8 @@ contract VerifySignature {
     {
         (uint8 v, bytes32 r, bytes32 s) = splitSignature(sig);
 
-        return accumulate(message, v, r, s);
-        //return ecrecover(message, v, r, s);
+        //return accumulate(message, v, r, s);
+        return ecrecover(message, v, r, s);
     }
 
     /// builds a prefixed hash to mimic the behavior of eth_sign.
@@ -57,17 +57,6 @@ contract VerifySignature {
         return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", hash));
     }
 }
-
-// address owner = msg.sender;
-
-// mapping(uint256 => bool) usedNonces;
-// function claimPayment(uint256 amount, uint256 nonce, bytes signature) 
-// splitSignature(bytes sig) returns (uint8 v, bytes32 r, bytes32 s)
-// recoverSigner(bytes32 message, bytes sig) returns (address)
-// prefixed(bytes32 hash) internal pure returns (bytes32) 
-// kill() 
-// constructor() public payable {}
-
 
 // abi=[{"constant":false,"inputs":[{"name":"amount","type":"uint256"}, {"name":"nonce","type":"uint256"}, {"name":"signature","type":"bytes"}], "name":"claimPayment","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"sig","type":"bytes"}], "name":"splitSignature", "outputs":[{"name":"v","type":"uint8"}, {"name":"r","type":"bytes32"}, {"name":"s","type":"bytes32"}],"payable":false,"type":"function"},{"constant":true,"input":[{"name":"message","type":"bytes32"},{"name":"sig","type":"bytes"}],"name":"recoverSigner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"hash","type":"bytes32"}],"name":"prefixed","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"payable":false,"type":"function"},{"inputs":[],"payable":true,"type":"constructor"}]
 

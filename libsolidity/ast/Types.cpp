@@ -2481,10 +2481,10 @@ string FunctionType::richIdentifier() const
 	case Kind::SHA3: id += "sha3"; break;
 	case Kind::Selfdestruct: id += "selfdestruct"; break;
 	case Kind::Revert: id += "revert"; break;
-	case Kind::ACCumulate: id += "accumulate"; break;
+	case Kind::ECRecover: id += "ecrecover"; break;
 	case Kind::SHA256: id += "sha256"; break;
 	case Kind::RIPEMD160: id += "ripemd160"; break;
-	case Kind::ECRecover: id += "ecrecover"; break;
+	case Kind::ACCumulate: id += "accumulate"; break;
 	case Kind::Log0: id += "log0"; break;
 	case Kind::Log1: id += "log1"; break;
 	case Kind::Log2: id += "log2"; break;
@@ -2825,10 +2825,10 @@ bool FunctionType::isBareCall() const
 	case Kind::BareCall:
 	case Kind::BareCallCode:
 	case Kind::BareDelegateCall:
-	case Kind::ACCumulate:
 	case Kind::ECRecover:
 	case Kind::SHA256:
 	case Kind::RIPEMD160:
+	case Kind::ACCumulate:
 		return true;
 	default:
 		return false;
@@ -2866,10 +2866,10 @@ bool FunctionType::isPure() const
 	//        the callgraph analyzer is in place
 	return
 		m_kind == Kind::SHA3 ||
-		m_kind == Kind::ACCumulate ||
 		m_kind == Kind::ECRecover ||		
 		m_kind == Kind::SHA256 ||
 		m_kind == Kind::RIPEMD160 ||
+		m_kind == Kind::ACCumulate ||
 		m_kind == Kind::AddMod ||
 		m_kind == Kind::MulMod ||
 		m_kind == Kind::ObjectCreation ||

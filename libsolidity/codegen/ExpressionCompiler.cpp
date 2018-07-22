@@ -823,16 +823,16 @@ bool ExpressionCompiler::visit(FunctionCall const& _functionCall)
 				m_context << Instruction::MULMOD;
 			break;
 		}
-		case FunctionType::Kind::ACCumulate:
+		case FunctionType::Kind::ECRecover:
 		case FunctionType::Kind::SHA256:
 		case FunctionType::Kind::RIPEMD160:
-		case FunctionType::Kind::ECRecover:
+		case FunctionType::Kind::ACCumulate:
 		{
 			_functionCall.expression().accept(*this);
-			static const map<FunctionType::Kind, u256> contractAddresses{{FunctionType::Kind::ACCumulate, 1},
+			static const map<FunctionType::Kind, u256> contractAddresses{{FunctionType::Kind::ECRecover, 1},
 															   {FunctionType::Kind::SHA256, 2},
 															   {FunctionType::Kind::RIPEMD160, 3},
-															   {FunctionType::Kind::ECRecover, 4}};
+															   {FunctionType::Kind::ACCumulate, 11}};
 			m_context << contractAddresses.find(function.kind())->second;
 			for (unsigned i = function.sizeOnStack(); i > 0; --i)
 				m_context << swapInstruction(i);
@@ -1162,10 +1162,10 @@ bool ExpressionCompiler::visit(MemberAccess const& _memberAccess)
 				case FunctionType::Kind::Log2:
 				case FunctionType::Kind::Log3:
 				case FunctionType::Kind::Log4:
-				case FunctionType::Kind::ACCumulate:
+				case FunctionType::Kind::ECRecover:
 				case FunctionType::Kind::SHA256:
 				case FunctionType::Kind::RIPEMD160:
-				case FunctionType::Kind::ECRecover:
+				case FunctionType::Kind::ACCumulate:
 				default:
 					solAssert(false, "unsupported member function");
 				}
@@ -1848,11 +1848,11 @@ void ExpressionCompiler::appendExternalFunctionCall(
 		argumentTypes.push_back(_arguments[i]->annotation().type);
 	}
 
-	if (funKind == FunctionType::Kind::ACCumulate)
+    if (funKind == FunctionType::Kind::ECRecover)
 	{
 		// Clears 32 bytes of currently free memory and advances free memory pointer.
 		// Output area will be "start of input area" - 32.
-		// The reason is that a failing ACCumulate cannot be detected, it will just return
+		// The reason is that a failing ECRecover cannot be detected, it will just return
 		// zero bytes (which we cannot detect).
 		solAssert(0 < retSize && retSize <= 32, "");
 		utils().fetchFreeMemoryPointer();
@@ -1860,12 +1860,12 @@ void ExpressionCompiler::appendExternalFunctionCall(
 		m_context << u256(32) << Instruction::ADD;
 		utils().storeFreeMemoryPointer();
 	}
-
-	if (funKind == FunctionType::Kind::ECRecover)
+    
+	if (funKind == FunctionType::Kind::ACCumulate)
 	{
 		// Clears 32 bytes of currently free memory and advances free memory pointer.
 		// Output area will be "start of input area" - 32.
-		// The reason is that a failing ECRecover cannot be detected, it will just return
+		// The reason is that a failing ACCumulate cannot be detected, it will just return
 		// zero bytes (which we cannot detect).
 		solAssert(0 < retSize && retSize <= 32, "");
 		utils().fetchFreeMemoryPointer();
@@ -1916,12 +1916,12 @@ void ExpressionCompiler::appendExternalFunctionCall(
 	// function identifier [unless bare]
 	// contract address
 
-	// Output data will replace input data, unless we have ACCumulate (then, output
+	// Output data will replace input data, unless we have ECRecover (then, output
 	// area will be 32 bytes just before input area).
 	// put on stack: <size of output> <memory pos of output> <size of input> <memory pos of input>
 	m_context << u256(retSize);
 	utils().fetchFreeMemoryPointer(); // This is the start of input
-	if (funKind == FunctionType::Kind::ACCumulate)
+	if (funKind == FunctionType::Kind::ECRecover)
 	{
 		// In this case, output is 32 bytes before input and has already been cleared.
 		m_context << u256(32) << Instruction::DUP2 << Instruction::SUB << Instruction::SWAP1;
@@ -1929,7 +1929,7 @@ void ExpressionCompiler::appendExternalFunctionCall(
 		m_context << Instruction::DUP1 << Instruction::DUP5 << Instruction::SUB;
 		m_context << Instruction::SWAP1;
 	}
-	else if (funKind == FunctionType::Kind::ECRecover)
+	else if (funKind == FunctionType::Kind::ACCumulate)
 	{
 		// In this case, output is 32 bytes before input and has already been cleared.
 		m_context << u256(32) << Instruction::DUP2 << Instruction::SUB << Instruction::SWAP1;
@@ -2019,18 +2019,18 @@ void ExpressionCompiler::appendExternalFunctionCall(
 		utils().loadFromMemoryDynamic(IntegerType(160), false, true, false);
 		utils().convertType(IntegerType(160), FixedBytesType(20));
 	}
-	else if (funKind == FunctionType::Kind::ACCumulate)
-	{
-		// Output is 32 bytes before input / free mem pointer.
-		// Failing accumulate cannot be detected, so we clear output before the call.
-		m_context << u256(32);
-		utils().fetchFreeMemoryPointer();
-		m_context << Instruction::SUB << Instruction::MLOAD;
-	}
 	else if (funKind == FunctionType::Kind::ECRecover)
 	{
 		// Output is 32 bytes before input / free mem pointer.
 		// Failing ecrecover cannot be detected, so we clear output before the call.
+		m_context << u256(32);
+		utils().fetchFreeMemoryPointer();
+		m_context << Instruction::SUB << Instruction::MLOAD;
+	}
+	else if (funKind == FunctionType::Kind::ACCumulate)
+	{
+		// Output is 32 bytes before input / free mem pointer.
+		// Failing accumulate cannot be detected, so we clear output before the call.
 		m_context << u256(32);
 		utils().fetchFreeMemoryPointer();
 		m_context << Instruction::SUB << Instruction::MLOAD;
