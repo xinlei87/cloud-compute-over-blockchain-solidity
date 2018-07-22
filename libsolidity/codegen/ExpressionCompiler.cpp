@@ -1929,27 +1929,19 @@ void ExpressionCompiler::appendExternalFunctionCall(
 		m_context << Instruction::DUP1 << Instruction::DUP5 << Instruction::SUB;
 		m_context << Instruction::SWAP1;
 	}
-	else
-	{
-		m_context << Instruction::DUP1 << Instruction::DUP4 << Instruction::SUB;
-		m_context << Instruction::DUP2;
-	}
-    
-	m_context << u256(retSize);
-	utils().fetchFreeMemoryPointer(); // This is the start of input
-	if (funKind == FunctionType::Kind::ECRecover)
+	else if (funKind == FunctionType::Kind::ECRecover)
 	{
 		// In this case, output is 32 bytes before input and has already been cleared.
 		m_context << u256(32) << Instruction::DUP2 << Instruction::SUB << Instruction::SWAP1;
 		// Here: <input end> <output size> <outpos> <input pos>
 		m_context << Instruction::DUP1 << Instruction::DUP5 << Instruction::SUB;
 		m_context << Instruction::SWAP1;
-	}
-	else
+	} else
 	{
 		m_context << Instruction::DUP1 << Instruction::DUP4 << Instruction::SUB;
 		m_context << Instruction::DUP2;
 	}
+	
 
 	// CALL arguments: outSize, outOff, inSize, inOff (already present up to here)
 	// [value,] addr, gas (stack top)
