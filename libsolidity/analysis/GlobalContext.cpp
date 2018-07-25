@@ -43,11 +43,12 @@ m_magicVariables(vector<shared_ptr<MagicVariableDeclaration const>>{
 	make_shared<MagicVariableDeclaration>("ecrecover", make_shared<FunctionType>(strings{"bytes32", "uint8", "bytes32", "bytes32"}, strings{"address"}, FunctionType::Kind::ECRecover, false, StateMutability::Pure)),
 	make_shared<MagicVariableDeclaration>("gasleft", make_shared<FunctionType>(strings(), strings{"uint256"}, FunctionType::Kind::GasLeft, false, StateMutability::View)),
 	make_shared<MagicVariableDeclaration>("keccak256", make_shared<FunctionType>(strings{"bytes memory"}, strings{"bytes32"}, FunctionType::Kind::SHA3, false, StateMutability::Pure)),
+	////// a + b, just for test, therefore, right iff a + b < 256 (uint8)
+	make_shared<MagicVariableDeclaration>("accumulate", make_shared<FunctionType>(strings{"uint8", "uint8"}, strings{"uint8"}, FunctionType::Kind::ACCumulate, false, StateMutability::Pure)),
 	////// hdsnark
-	make_shared<MagicVariableDeclaration>("accumulate", make_shared<FunctionType>(strings{"bytes32", "uint8", "bytes32", "bytes32"}, strings{"address"}, FunctionType::Kind::ACCumulate, false, StateMutability::Pure)),
-	make_shared<MagicVariableDeclaration>("setUp", make_shared<FunctionType>(strings{"bytes32", "uint8", "bytes32", "bytes32"}, strings{"address"}, FunctionType::Kind::SetUP, false, StateMutability::Pure)),
-	make_shared<MagicVariableDeclaration>("genProof", make_shared<FunctionType>(strings{"bytes32", "uint8", "bytes32", "bytes32"}, strings{"address"}, FunctionType::Kind::GenProof, false, StateMutability::Pure)),
-	make_shared<MagicVariableDeclaration>("verProof", make_shared<FunctionType>(strings{"bytes32", "uint8", "bytes32", "bytes32"}, strings{"address"}, FunctionType::Kind::VerProof, false, StateMutability::Pure)),
+	// proof, signature(128bytes), data_hash, coefficent_hash, result (such as premium)
+	make_shared<MagicVariableDeclaration>("verProof", make_shared<FunctionType>(strings{"bytes memory", "bytes memory", "bytes32", "bytes32", "uint256"}, strings{"uint256"}, FunctionType::Kind::VerProof, false, StateMutability::Pure)),
+
 	////////
 	make_shared<MagicVariableDeclaration>("log0", make_shared<FunctionType>(strings{"bytes32"}, strings{}, FunctionType::Kind::Log0)),
 	make_shared<MagicVariableDeclaration>("log1", make_shared<FunctionType>(strings{"bytes32", "bytes32"}, strings{}, FunctionType::Kind::Log1)),

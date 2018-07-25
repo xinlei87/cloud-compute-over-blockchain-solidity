@@ -2486,8 +2486,6 @@ string FunctionType::richIdentifier() const
 	case Kind::RIPEMD160: id += "ripemd160"; break;
 	////// hdsnark
 	case Kind::ACCumulate: id += "accumulate"; break;
-    case Kind::SetUP: id += "setUp"; break;
-	case Kind::GenProof: id += "genProof"; break;
 	case Kind::VerProof: id += "verProof"; break;
 	/////
 	case Kind::Log0: id += "log0"; break;
@@ -2835,8 +2833,6 @@ bool FunctionType::isBareCall() const
 	case Kind::RIPEMD160:
 	////// hdsnark
 	case Kind::ACCumulate:
-    case Kind::SetUP:
-	case Kind::GenProof:
 	case Kind::VerProof:
 	/////
 		return true;
@@ -2881,9 +2877,7 @@ bool FunctionType::isPure() const
 		m_kind == Kind::RIPEMD160 ||
 		////// hdsnark
 		m_kind == Kind::ACCumulate ||
-		m_kind == Kind::SetUP ||
-		m_kind == Kind::GenProof ||
-        m_kind == Kind::VerProof ||
+		m_kind == Kind::VerProof ||
 		//////
 		m_kind == Kind::AddMod ||
 		m_kind == Kind::MulMod ||
@@ -2987,6 +2981,7 @@ bool FunctionType::padArguments() const
 	case Kind::SHA256:
 	case Kind::RIPEMD160:
 	case Kind::SHA3:
+	case Kind::VerProof: 
 	case Kind::ABIEncodePacked:
 		return false;
 	default:

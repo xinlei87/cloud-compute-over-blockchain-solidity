@@ -2,45 +2,20 @@ pragma solidity ^0.4.24;
 
 contract VerifySignature {
 
-    constructor() public payable {}
+    // function recoverSigner(uint8 v, bytes32 r, bytes32 s, bytes32 message) public returns (address)
+    // {
+    //     return ecrecover(keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", message)), v, r, s);
+    // }
 
-    /// destroy the contract and reclaim the leftover funds.
-    function kill() public {
-        selfdestruct(msg.sender);
-    }
-
-    /// signature methods.
-    function splitSignature(bytes sig)
-        internal
-        pure
-        returns (uint8 v, bytes32 r, bytes32 s)
+    function ADD(uint8 a, uint8 b) public returns (uint8)
     {
-        require(sig.length == 65);
-
-        assembly {
-            // first 32 bytes, after the length prefix.
-            r := mload(add(sig, 32))
-            // second 32 bytes.
-            s := mload(add(sig, 64))
-            // final byte (first byte of the next 32 bytes).
-            v := byte(0, mload(add(sig, 96)))
-        }
-
-        return (v, r, s);
+        return accumulate(a, b);
     }
 
-    function recoverSigner(bytes32 message, bytes sig) public returns (address)
+    // "bytes memory", "bytes32", "bytes32", "uint256"}, strings{"uint256"
+    // proof, sig data_hash, coefficent_hash, result (such as premium)
+    function verifyProof(bytes proof, bytes sig, bytes32 data_hash, bytes32 coefficent_hash, uint256 result) public returns (uint256)
     {
-        (uint8 v, bytes32 r, bytes32 s) = splitSignature(sig);
-
-        return accumulate(message, v, r, s);
-        // return ecrecover(prefixed(message), v, r, s);
-    }
-
-    /// builds a prefixed hash to mimic the behavior of eth_sign.
-    function prefixed(bytes32 hash) internal pure returns (bytes32) {
-        return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", hash));
+        return verProof(proof, sig, data_hash, coefficent_hash, result);
     }
 }
-
-

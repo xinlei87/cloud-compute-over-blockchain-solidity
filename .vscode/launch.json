@@ -12,7 +12,7 @@
             // Resolved by CMake Tools:
             //"program": "${command:cmake.launchTargetPath}",
             "program": "${workspaceRoot}/build/solc/solc",
-            "args": ["--bin", "${workspaceRoot}/src/VerifySignature.sol"],
+            "args": ["--bin", "--asm", "${workspaceRoot}/src/VerifySignature.sol"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

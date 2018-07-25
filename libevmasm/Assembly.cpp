@@ -131,6 +131,7 @@ public:
 		{
 			flush();
 			m_out << m_prefix << (_item.type() == Tag ? "" : "  ") << _item.toAssemblyText() << endl;
+			// std::cout << m_prefix << (_item.type() == Tag ? "" : "  ") << _item.toAssemblyText() << endl;
 			return;
 		}
 		string expression = _item.toAssemblyText();
@@ -154,8 +155,10 @@ public:
 
 	void flush()
 	{
-		for (string const& expression: m_pending)
-			m_out << m_prefix << "  " << expression << endl;
+		for (string const& expression: m_pending){
+             m_out << m_prefix << "  " << expression << endl;
+			 // std::cout << m_prefix << "  " << expression << endl;
+		}
 		m_pending.clear();
 	}
 
@@ -164,12 +167,21 @@ public:
 		if (!m_location.sourceName && m_location.isEmpty())
 			return;
 		m_out << m_prefix << "    /*";
-		if (m_location.sourceName)
+		// std::cout << m_prefix << "    /*";
+		if (m_location.sourceName){
 			m_out << " \"" + *m_location.sourceName + "\"";
-		if (!m_location.isEmpty())
+			// std::cout << " \"" + *m_location.sourceName + "\"";
+		}
+			
+		if (!m_location.isEmpty()){
 			m_out << ":" << to_string(m_location.start) + ":" + to_string(m_location.end);
+			// std::cout << ":" << to_string(m_location.start) + ":" + to_string(m_location.end);
+		}
+			
 		m_out << "  " << locationFromSources(m_sourceCodes, m_location);
 		m_out << " */" << endl;
+		// std::cout << "  " << locationFromSources(m_sourceCodes, m_location);
+		// std::cout << " */" << endl;
 	}
 
 private:
@@ -186,35 +198,51 @@ private:
 void Assembly::assemblyStream(ostream& _out, string const& _prefix, StringMap const& _sourceCodes) const
 {
 	Functionalizer f(_out, _prefix, _sourceCodes);
-
-	for (auto const& i: m_items)
-		f.feed(i);
+    
+	// int cnt = 0;
+  	// for (auto const& i: m_items){
+	// 	  cnt ++;
+	// 	  if (cnt == 180) {
+    //         printf("test\n");
+	// 	  }
+    //       f.feed(i);
+	//   }
+		
 	f.flush();
 
 	if (!m_data.empty() || !m_subs.empty())
 	{
 		_out << _prefix << "stop" << endl;
+		// std::cout << _prefix << "stop" << endl;
 		for (auto const& i: m_data)
-			if (u256(i.first) >= m_subs.size())
+			if (u256(i.first) >= m_subs.size()){
 				_out << _prefix << "data_" << toHex(u256(i.first)) << " " << toHex(i.second) << endl;
+				// std::cout << _prefix << "data_" << toHex(u256(i.first)) << " " << toHex(i.second) << endl;
+			}
 
 		for (size_t i = 0; i < m_subs.size(); ++i)
 		{
 			_out << endl << _prefix << "sub_" << i << ": assembly {\n";
+			// std::cout << endl << _prefix << "sub_" << i << ": assembly {\n";
 			m_subs[i]->assemblyStream(_out, _prefix + "    ", _sourceCodes);
 			_out << _prefix << "}" << endl;
+			// std::cout << endl << _prefix << "sub_" << i << ": assembly {\n";
 		}
 	}
 
-	if (m_auxiliaryData.size() > 0)
+	if (m_auxiliaryData.size() > 0){
 		_out << endl << _prefix << "auxdata: 0x" << toHex(m_auxiliaryData) << endl;
+		// std::cout << endl << _prefix << "auxdata: 0x" << toHex(m_auxiliaryData) << endl;
+	}
 }
 
 string Assembly::assemblyString(StringMap const& _sourceCodes) const
 {
 	ostringstream tmp;
 	assemblyStream(tmp, "", _sourceCodes);
-	return tmp.str();
+	std::string strtest = tmp.str();
+	// std::cout << " \n tmp.str()==========\n " << strtest << endl;
+	return strtest;
 }
 
 Json::Value Assembly::createJsonValue(string _name, int _begin, int _end, string _value, string _jumpType)

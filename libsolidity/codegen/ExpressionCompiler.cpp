@@ -826,17 +826,16 @@ bool ExpressionCompiler::visit(FunctionCall const& _functionCall)
 		case FunctionType::Kind::ECRecover:
 		case FunctionType::Kind::SHA256:
 		case FunctionType::Kind::RIPEMD160:
+		case FunctionType::Kind::VerProof:
 		case FunctionType::Kind::ACCumulate:
 		{
 			_functionCall.expression().accept(*this);
 			static const map<FunctionType::Kind, u256> contractAddresses{{FunctionType::Kind::ECRecover, 1},
 															   {FunctionType::Kind::SHA256, 2},
 															   {FunctionType::Kind::RIPEMD160, 3},
-															   ////// hdsnark
-															   {FunctionType::Kind::ACCumulate, 11}
-															   {FunctionType::Kind::SetUP, 11},
-															   {FunctionType::Kind::GenProof, 12},
-															   {FunctionType::Kind::VerProof, 13}};
+															   ////// function ID
+															   {FunctionType::Kind::ACCumulate, 11},
+															   {FunctionType::Kind::VerProof, 12}};
 			m_context << contractAddresses.find(function.kind())->second;
 			for (unsigned i = function.sizeOnStack(); i > 0; --i)
 				m_context << swapInstruction(i);
@@ -1171,8 +1170,6 @@ bool ExpressionCompiler::visit(MemberAccess const& _memberAccess)
 				case FunctionType::Kind::RIPEMD160:
 				////// hdsnark
 				case FunctionType::Kind::ACCumulate:
-				case FunctionType::Kind::SetUP:
-				case FunctionType::Kind::GenProof:
 				case FunctionType::Kind::VerProof:
 				default:
 					solAssert(false, "unsupported member function");
@@ -1876,6 +1873,7 @@ void ExpressionCompiler::appendExternalFunctionCall(
 		// Output area will be "start of input area" - 32.
 		// The reason is that a failing ACCumulate cannot be detected, it will just return
 		// zero bytes (which we cannot detect).
+		// std::cout << "ACCumulate retSize = " << retSize << endl;
 		solAssert(0 < retSize && retSize <= 32, "");
 		utils().fetchFreeMemoryPointer();
 		m_context << u256(0) << Instruction::DUP2 << Instruction::MSTORE;
@@ -1943,7 +1941,7 @@ void ExpressionCompiler::appendExternalFunctionCall(
 	else if (funKind == FunctionType::Kind::ACCumulate)
 	{
 		// In this case, output is 32 bytes before input and has already been cleared.
-		m_context << u256(32) << Instruction::DUP2 << Instruction::SUB << Instruction::SWAP1;
+		m_context << u256(32) << Instruction::DUP2 << Instruction::SUB << Instruction::SWAP1; // m_context.m_asm
 		// Here: <input end> <output size> <outpos> <input pos>
 		m_context << Instruction::DUP1 << Instruction::DUP5 << Instruction::SUB;
 		m_context << Instruction::SWAP1;

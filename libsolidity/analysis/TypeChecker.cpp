@@ -1714,6 +1714,11 @@ bool TypeChecker::visit(FunctionCall const& _functionCall)
 				" This function requires a single bytes argument."
 				" Use abi.encodePacked(...) to obtain the pre-0.5.0 behaviour"
 				" or abi.encode(...) to use ABI encoding.";
+		else if (    // add error report!
+			functionType->kind() == FunctionType::Kind::VerProof
+		)
+			msg +=
+				" This function requires four arguments.";
 		m_errorReporter.typeError(_functionCall.location(), msg);
 	}
 	else if (isPositionalCall)
@@ -1773,6 +1778,11 @@ bool TypeChecker::visit(FunctionCall const& _functionCall)
 						" This function requires a single bytes argument."
 						" Use abi.encodePacked(...) to obtain the pre-0.5.0 behaviour"
 						" or abi.encode(...) to use ABI encoding.";
+				else if (    // add error report!
+					functionType->kind() == FunctionType::Kind::VerProof
+				)
+					msg +=
+						" This function requires four arguments.";
 				m_errorReporter.typeError(arguments[i]->location(), msg);
 			}
 		}

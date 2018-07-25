@@ -825,13 +825,13 @@ bool CommandLineInterface::processInput()
 		if (m_args.count(g_argInputFile))
 			m_compiler->setRemappings(m_args[g_argInputFile].as<vector<string>>());
 		for (auto const& sourceCode: m_sourceCodes)
-			m_compiler->addSource(sourceCode.first, sourceCode.second);
+			m_compiler->addSource(sourceCode.first, sourceCode.second); // smart contract path and content --Agzs
 		if (m_args.count(g_argLibraries))
 			m_compiler->setLibraries(m_libraries);
-		m_compiler->setEVMVersion(m_evmVersion);
+		m_compiler->setEVMVersion(m_evmVersion); // dev::solidity::EVMVersion::Version::Byzantium --Agzs
 		// TODO: Perhaps we should not compile unless requested
 		bool optimize = m_args.count(g_argOptimize) > 0;
-		unsigned runs = m_args[g_argOptimizeRuns].as<unsigned>();
+		unsigned runs = m_args[g_argOptimizeRuns].as<unsigned>(); // 0 -> 200? --Agzs
 		m_compiler->setOptimiserSettings(optimize, runs);
 
 		bool successful = m_compiler->compile();

@@ -178,7 +178,7 @@ bool CompilerStack::analyze()
 			if (!docStringAnalyser.analyseDocStrings(*source->ast))
 				noErrors = false;
 
-		m_globalContext = make_shared<GlobalContext>();
+		m_globalContext = make_shared<GlobalContext>();  // read globalContext --Agzs
 		NameAndTypeResolver resolver(m_globalContext->declarations(), m_scopes, m_errorReporter);
 		for (Source const* source: m_sourceOrder)
 			if (!resolver.registerDeclarations(*source->ast))
@@ -405,8 +405,11 @@ eth::LinkerObject const& CompilerStack::cloneObject(string const& _contractName)
 string CompilerStack::assemblyString(string const& _contractName, StringMap _sourceCodes) const
 {
 	Contract const& currentContract = contract(_contractName);
-	if (currentContract.compiler)
-		return currentContract.compiler->assemblyString(_sourceCodes);
+	if (currentContract.compiler) {
+		std::string strtest = currentContract.compiler->assemblyString(_sourceCodes);
+		// std::cout << "\ncurrentContract.compiler->assemblyString ============\n" << strtest << endl;
+		return strtest;
+	}
 	else
 		return string();
 }

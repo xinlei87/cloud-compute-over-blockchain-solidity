@@ -902,9 +902,7 @@ public:
 		RIPEMD160, ///< CALL to special contract for ripemd160
 		////// hdsnark
 		ACCumulate, ///< CALL to special contract for accumulate
-		SetUP,
-		GenProof,
-        VerProof,
+		VerProof, ///< CALL to special contract for verProof
 		//////
 		Log0,
 		Log1,
@@ -1074,6 +1072,7 @@ public:
 		case FunctionType::Kind::SHA3:
 		case FunctionType::Kind::SHA256:
 		case FunctionType::Kind::RIPEMD160:
+		case FunctionType::Kind::VerProof:
 		case FunctionType::Kind::BareCall:
 		case FunctionType::Kind::BareCallCode:
 		case FunctionType::Kind::BareDelegateCall:

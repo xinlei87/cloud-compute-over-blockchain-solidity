@@ -156,7 +156,7 @@ GasEstimator::GasConsumption GasEstimator::functionalEstimation(
 		classes.forceEqual(
 			classes.find(u256(0)),
 			Instruction::LT,
-			Ids{classes.find(Instruction::CALLDATASIZE), classes.find(u256(4))}
+			Ids{classes.find(Instruction::CALLDATASIZE), classes.find(u256(5))} // change parameters number
 		);
 	}
 

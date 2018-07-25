@@ -302,7 +302,8 @@ void ContractCompiler::appendFunctionSelector(ContractDefinition const& _contrac
 	eth::AssemblyItem notFound = m_context.newTag();
 	// directly jump to fallback if the data is too short to contain a function selector
 	// also guards against short data
-	m_context << u256(4) << Instruction::CALLDATASIZE << Instruction::LT;
+	// change the parameters number from u256(4) to u256(5). Very Important --Agzs
+	m_context << u256(5) << Instruction::CALLDATASIZE << Instruction::LT; 
 	m_context.appendConditionalJumpTo(notFound);
 
 	// retrieve the function signature hash from the calldata
