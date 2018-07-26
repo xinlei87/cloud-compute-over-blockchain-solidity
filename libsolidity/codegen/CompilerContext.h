@@ -233,9 +233,9 @@ public:
 	/// @arg _sourceCodes is the map of input files to source code strings
 	std::string assemblyString(StringMap const& _sourceCodes = StringMap()) const
 	{
-		std::string strtest = m_asm->assemblyString(_sourceCodes);
+		// std::string strtest = m_asm->assemblyString(_sourceCodes);
 		// std::cout << "\nm_asm->assemblyString(_sourceCodes) ==========\n" << strtest << std::endl;		
-		return strtest;
+		return m_asm->assemblyString(_sourceCodes);
 	}
 
 	/// @arg _sourceCodes is the map of input files to source code strings

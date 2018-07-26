@@ -199,15 +199,9 @@ void Assembly::assemblyStream(ostream& _out, string const& _prefix, StringMap co
 {
 	Functionalizer f(_out, _prefix, _sourceCodes);
     
-	// int cnt = 0;
-  	// for (auto const& i: m_items){
-	// 	  cnt ++;
-	// 	  if (cnt == 180) {
-    //         printf("test\n");
-	// 	  }
-    //       f.feed(i);
-	//   }
-		
+  	for (auto const& i: m_items){
+        f.feed(i);
+	}
 	f.flush();
 
 	if (!m_data.empty() || !m_subs.empty())
@@ -226,7 +220,7 @@ void Assembly::assemblyStream(ostream& _out, string const& _prefix, StringMap co
 			// std::cout << endl << _prefix << "sub_" << i << ": assembly {\n";
 			m_subs[i]->assemblyStream(_out, _prefix + "    ", _sourceCodes);
 			_out << _prefix << "}" << endl;
-			// std::cout << endl << _prefix << "sub_" << i << ": assembly {\n";
+			// std::cout << _prefix << "}" << endl;
 		}
 	}
 
@@ -240,9 +234,9 @@ string Assembly::assemblyString(StringMap const& _sourceCodes) const
 {
 	ostringstream tmp;
 	assemblyStream(tmp, "", _sourceCodes);
-	std::string strtest = tmp.str();
+	// std::string strtest = tmp.str();
 	// std::cout << " \n tmp.str()==========\n " << strtest << endl;
-	return strtest;
+	return tmp.str();
 }
 
 Json::Value Assembly::createJsonValue(string _name, int _begin, int _end, string _value, string _jumpType)

@@ -406,9 +406,9 @@ string CompilerStack::assemblyString(string const& _contractName, StringMap _sou
 {
 	Contract const& currentContract = contract(_contractName);
 	if (currentContract.compiler) {
-		std::string strtest = currentContract.compiler->assemblyString(_sourceCodes);
+		// std::string strtest = currentContract.compiler->assemblyString(_sourceCodes);
 		// std::cout << "\ncurrentContract.compiler->assemblyString ============\n" << strtest << endl;
-		return strtest;
+		return currentContract.compiler->assemblyString(_sourceCodes);
 	}
 	else
 		return string();

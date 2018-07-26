@@ -234,6 +234,7 @@ void CommandLineInterface::handleBinary(string const& _contract)
 		else
 		{
 			cout << "Binary: " << endl;
+			cout << "0x";
 			cout << m_compiler->object(_contract).toHex() << endl;
 		}
 	}

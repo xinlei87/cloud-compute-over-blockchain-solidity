@@ -65,9 +65,9 @@ public:
 	/// @arg _sourceCodes is the map of input files to source code strings
 	std::string assemblyString(StringMap const& _sourceCodes = StringMap()) const
 	{
-		std::string strtest = m_context.assemblyString(_sourceCodes);
+		// std::string strtest = m_context.assemblyString(_sourceCodes);
 		// std::cout << "\nm_context.assemblyString(_sourceCodes) ==========\n" << strtest << std::endl;
-		return strtest;
+		return m_context.assemblyString(_sourceCodes);
 	}
 	/// @arg _sourceCodes is the map of input files to source code strings
 	Json::Value assemblyJSON(StringMap const& _sourceCodes = StringMap()) const

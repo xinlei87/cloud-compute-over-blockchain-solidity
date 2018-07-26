@@ -46,8 +46,8 @@ m_magicVariables(vector<shared_ptr<MagicVariableDeclaration const>>{
 	////// a + b, just for test, therefore, right iff a + b < 256 (uint8)
 	make_shared<MagicVariableDeclaration>("accumulate", make_shared<FunctionType>(strings{"uint8", "uint8"}, strings{"uint8"}, FunctionType::Kind::ACCumulate, false, StateMutability::Pure)),
 	////// hdsnark
-	// proof, signature(128bytes), data_hash, coefficent_hash, result (such as premium)
-	make_shared<MagicVariableDeclaration>("verProof", make_shared<FunctionType>(strings{"bytes memory", "bytes memory", "bytes32", "bytes32", "uint256"}, strings{"uint256"}, FunctionType::Kind::VerProof, false, StateMutability::Pure)),
+	// proof, data_hash, coefficent_hash, result (such as premium)
+	make_shared<MagicVariableDeclaration>("verProof", make_shared<FunctionType>(strings{"bytes memory", "bytes32", "bytes32", "uint256"}, strings{"uint256"}, FunctionType::Kind::VerProof, false, StateMutability::Pure)),
 
 	////////
 	make_shared<MagicVariableDeclaration>("log0", make_shared<FunctionType>(strings{"bytes32"}, strings{}, FunctionType::Kind::Log0)),
