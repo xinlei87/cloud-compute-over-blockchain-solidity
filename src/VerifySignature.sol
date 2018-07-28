@@ -14,8 +14,8 @@ contract VerifySignature {
 
     // "bytes memory", "bytes32", "bytes32", "uint256"}, strings{"uint256"
     // proof, sig data_hash, coefficent_hash, result (such as premium)
-    function verifyProof(bytes proof, bytes32 data_hash, bytes32 coefficent_hash, uint256 result) public returns (uint256)
+    function verifyProof(bytes proof, bytes32 data_hash, uint256 result, bytes coefficent) public returns (uint256)
     {
-        return verProof(proof, data_hash, coefficent_hash, result);
+        return verProof(proof, data_hash, result, coefficent);
     }
 }
