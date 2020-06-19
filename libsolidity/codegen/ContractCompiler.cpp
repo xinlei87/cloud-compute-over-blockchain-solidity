@@ -303,7 +303,7 @@ void ContractCompiler::appendFunctionSelector(ContractDefinition const& _contrac
 	// directly jump to fallback if the data is too short to contain a function selector
 	// also guards against short data
 	// change the parameters number should be changed iff large than 4. Very Important --Agzs
-	m_context << u256(4) << Instruction::CALLDATASIZE << Instruction::LT; 
+	m_context << u256(10) << Instruction::CALLDATASIZE << Instruction::LT; 
 	m_context.appendConditionalJumpTo(notFound);
 
 	// retrieve the function signature hash from the calldata

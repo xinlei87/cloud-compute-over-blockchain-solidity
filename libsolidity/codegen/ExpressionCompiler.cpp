@@ -827,6 +827,9 @@ bool ExpressionCompiler::visit(FunctionCall const& _functionCall)
 		case FunctionType::Kind::SHA256:
 		case FunctionType::Kind::RIPEMD160:
 		case FunctionType::Kind::VerProof:
+		
+		case FunctionType::Kind::VeriCipher:
+		case FunctionType::Kind::VeriTV:
 		case FunctionType::Kind::ACCumulate:
 		{
 			_functionCall.expression().accept(*this);
@@ -835,7 +838,10 @@ bool ExpressionCompiler::visit(FunctionCall const& _functionCall)
 															   {FunctionType::Kind::RIPEMD160, 3},
 															   ////// function ID
 															   {FunctionType::Kind::ACCumulate, 11},
-															   {FunctionType::Kind::VerProof, 12}};
+															   {FunctionType::Kind::VerProof, 12},
+
+{FunctionType::Kind::VeriCipher, 14},
+{FunctionType::Kind::VeriTV, 15}};
 			m_context << contractAddresses.find(function.kind())->second;
 			for (unsigned i = function.sizeOnStack(); i > 0; --i)
 				m_context << swapInstruction(i);
@@ -1171,6 +1177,9 @@ bool ExpressionCompiler::visit(MemberAccess const& _memberAccess)
 				////// hdsnark
 				case FunctionType::Kind::ACCumulate:
 				case FunctionType::Kind::VerProof:
+				
+				case FunctionType::Kind::VeriCipher:
+				case FunctionType::Kind::VeriTV:
 				default:
 					solAssert(false, "unsupported member function");
 				}

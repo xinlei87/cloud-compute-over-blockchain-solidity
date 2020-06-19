@@ -2487,6 +2487,9 @@ string FunctionType::richIdentifier() const
 	////// hdsnark
 	case Kind::ACCumulate: id += "accumulate"; break;
 	case Kind::VerProof: id += "verProof"; break;
+	//ABEO
+	case Kind::VeriCipher: id += "veriCipher"; break;
+	case Kind::VeriTV: id += "veriTV"; break;
 	/////
 	case Kind::Log0: id += "log0"; break;
 	case Kind::Log1: id += "log1"; break;
@@ -2834,6 +2837,9 @@ bool FunctionType::isBareCall() const
 	////// hdsnark
 	case Kind::ACCumulate:
 	case Kind::VerProof:
+	///ABEO
+	case Kind::VeriCipher:
+	case Kind::VeriTV:
 	/////
 		return true;
 	default:
@@ -2879,6 +2885,9 @@ bool FunctionType::isPure() const
 		m_kind == Kind::ACCumulate ||
 		m_kind == Kind::VerProof ||
 		//////
+		/////ABEO
+		m_kind == Kind::VeriCipher ||
+		m_kind == Kind::VeriTV ||
 		m_kind == Kind::AddMod ||
 		m_kind == Kind::MulMod ||
 		m_kind == Kind::ObjectCreation ||
@@ -2982,6 +2991,8 @@ bool FunctionType::padArguments() const
 	case Kind::RIPEMD160:
 	case Kind::SHA3:
 	case Kind::VerProof: 
+	case Kind::VeriCipher:
+	case Kind::VeriTV:
 	case Kind::ABIEncodePacked:
 		return false;
 	default:

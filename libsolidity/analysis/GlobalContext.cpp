@@ -48,7 +48,9 @@ m_magicVariables(vector<shared_ptr<MagicVariableDeclaration const>>{
 	////// hdsnark
 	// proof, data_hash, result (such as premium), coefficent
 	make_shared<MagicVariableDeclaration>("verProof", make_shared<FunctionType>(strings{"bytes memory", "bytes32", "uint256", "bytes memory"}, strings{"uint256"}, FunctionType::Kind::VerProof, false, StateMutability::Pure)),
-
+	///ABEO
+	make_shared<MagicVariableDeclaration>("veriCipher", make_shared<FunctionType>(strings{"string memory", "string memory", "string memory"}, strings{"bool"}, FunctionType::Kind::VeriCipher, false, StateMutability::Pure)),
+	make_shared<MagicVariableDeclaration>("veriTV", make_shared<FunctionType>(strings{"string memory","string memory","string memory","string memory","string memory","string memory"}, strings{"bool"}, FunctionType::Kind::VeriTV, false, StateMutability::Pure)),
 	////////
 	make_shared<MagicVariableDeclaration>("log0", make_shared<FunctionType>(strings{"bytes32"}, strings{}, FunctionType::Kind::Log0)),
 	make_shared<MagicVariableDeclaration>("log1", make_shared<FunctionType>(strings{"bytes32", "bytes32"}, strings{}, FunctionType::Kind::Log1)),

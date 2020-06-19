@@ -903,6 +903,9 @@ public:
 		////// hdsnark
 		ACCumulate, ///< CALL to special contract for accumulate
 		VerProof, ///< CALL to special contract for verProof
+		
+		VeriCipher,///ABEO
+		VeriTV,
 		//////
 		Log0,
 		Log1,
@@ -1073,6 +1076,8 @@ public:
 		case FunctionType::Kind::SHA256:
 		case FunctionType::Kind::RIPEMD160:
 		case FunctionType::Kind::VerProof:
+		case FunctionType::Kind::VeriCipher:
+		case FunctionType::Kind::VeriTV:
 		case FunctionType::Kind::BareCall:
 		case FunctionType::Kind::BareCallCode:
 		case FunctionType::Kind::BareDelegateCall:
